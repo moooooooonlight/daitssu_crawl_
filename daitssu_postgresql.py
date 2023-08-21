@@ -12,17 +12,25 @@ tag_ul = soup.find("ul", {"class": "columns-4"})
 
 # 데이터베이스에 연결 설정
 conn = psycopg2.connect(
-    dbname="your_database_name",
-    user="your_user",
-    password="your_password",
-    host="your_host",
-    port="your_port"
+    host='daitssu-postgres.ccf8zpssvvpc.ap-northeast-2.rds.amazonaws.com',
+    database='dev_daitssu',
+    user='dev_user_hope_it_is_last',
+    password='NO!YU#CHUL(PL@EA%SE.ADMIN_N$O$T',
+    port=5432
 )
+
+#conntect가 잘 됐는지 확인하는 코드
+print(conn)
+
 cursor = conn.cursor()
+
+# 사용자에게 스키마 또는 테이블에 대한 권한 부여
+cursor.execute('GRANT ALL PRIVILEGES ON SCHEMA public TO your_user;')
+cursor.execute('GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO your_user;')
 
 # 프로그램 데이터를 저장할 테이블 생성 (이미 있는 경우에는 무시)
 cursor.execute('''
-    CREATE TABLE IF NOT EXISTS programs (
+    CREATE TABLE IF NOT EXISTS dev_daitssu (
         id SERIAL PRIMARY KEY,
         title TEXT,
         url TEXT,
@@ -110,15 +118,6 @@ for data in tag_ul.find_all("li"):
 # 프로그램 데이터 출력
 cursor.execute('SELECT * FROM programs')
 programs_data = cursor.fetchall()
-
-for program in programs_data:
-    print("Title:", program[1])
-    print("URL:", program[2])
-    print("Image URL:", program[3])
-    print("Created Time:", program[4])
-    print("Updated Time:", program[5])
-    print("Content:", program[6])
-    print("========================================================================================")
 
 # 데이터베이스 연결 닫기
 conn.close()
