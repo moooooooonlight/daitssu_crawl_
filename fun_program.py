@@ -7,7 +7,7 @@ Fun = "https://fun.ssu.ac.kr/ko/program"
 html = requests.get(Fun)
 html_text = html.text
 soup = BeautifulSoup(html_text, "html.parser")
-
+x= 10
 # class=columns-4 ul로 이동해 각 프로그램들에 접근
 # class=columns-4 -> 전체 프로그램 리스트
 tag_ul = soup.find("ul", {"class": "columns-4"})
